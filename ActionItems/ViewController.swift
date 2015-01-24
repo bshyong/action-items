@@ -8,11 +8,25 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+
+  @IBOutlet weak var tableView: UITableView!
+  var actionItems = [ActionItem]()
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    tableView.dataSource = self
+    tableView.delegate = self
+    tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
+
+    if actionItems.count > 0 {
+      return
+    }
+
+    actionItems.append(ActionItem(description: "just an item"))
+    actionItems.append(ActionItem(description: "another item"))
+    
   }
 
   override func didReceiveMemoryWarning() {
@@ -20,6 +34,24 @@ class ViewController: UIViewController {
     // Dispose of any resources that can be recreated.
   }
 
+  // TableViewDataSourceDelegate
+  func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    return 1
+  }
+  
+  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return actionItems.count
+  }
+  
+  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as UITableViewCell
+    let item = actionItems[indexPath.row]
+    
+    cell.textLabel?.text = item.text
+
+    return cell
+  }
+  
 
 }
 
