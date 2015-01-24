@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, TableViewCellDelegate {
 
   @IBOutlet weak var tableView: UITableView!
   var actionItems = [ActionItem]()
@@ -38,9 +38,32 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     actionItems.append(ActionItem(description: "another item"))
     actionItems.append(ActionItem(description: "just an item"))
     actionItems.append(ActionItem(description: "another item"))
+    actionItems.append(ActionItem(description: "another item"))
+    actionItems.append(ActionItem(description: "just an item"))
+    actionItems.append(ActionItem(description: "another item"))
+    actionItems.append(ActionItem(description: "another item"))
+    actionItems.append(ActionItem(description: "just an item"))
+    actionItems.append(ActionItem(description: "another item"))
+    actionItems.append(ActionItem(description: "another item"))
+    actionItems.append(ActionItem(description: "just an item"))
+    actionItems.append(ActionItem(description: "another item"))
     
   }
 
+  // MARK: - Table View Cell delegate
+  func actionItemDeleted(actionItem: ActionItem) {
+    
+    let index = (actionItems as NSArray).indexOfObject(actionItem)
+    if index == NSNotFound { return }
+    actionItems.removeAtIndex(index)
+    
+    // animate removal of the row with UITableView
+    tableView.beginUpdates()
+    let indexPathForRow = NSIndexPath(forRow: index, inSection: 0)
+    tableView.deleteRowsAtIndexPaths([indexPathForRow], withRowAnimation: .Fade)
+    tableView.endUpdates()
+  }
+  
   // color cells with gradient by index
   func colorForIndex(index: Int) -> UIColor {
     let itemCount = actionItems.count - 1
@@ -76,10 +99,14 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as TableViewCell
     // disable highlighting when cell is selected
     cell.selectionStyle = .None
-    let item = actionItems[indexPath.row]
+    let actionItem = actionItems[indexPath.row]
     
-    cell.textLabel?.text = item.text
+    cell.textLabel?.text = actionItem.text
     cell.textLabel?.backgroundColor = UIColor.clearColor()
+
+    // set delegate and actionItem properties
+    cell.delegate = self
+    cell.actionItem  = actionItem
 
     return cell
   }
