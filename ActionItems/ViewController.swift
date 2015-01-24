@@ -18,7 +18,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     tableView.dataSource = self
     tableView.delegate = self
-    tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
+    tableView.registerClass(TableViewCell.self, forCellReuseIdentifier: "cell")
+    tableView.rowHeight = 50.0
+    tableView.separatorStyle = .None
 
     if actionItems.count > 0 {
       return
@@ -26,14 +28,39 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
     actionItems.append(ActionItem(description: "just an item"))
     actionItems.append(ActionItem(description: "another item"))
+    actionItems.append(ActionItem(description: "just an item"))
+    actionItems.append(ActionItem(description: "another item"))
+    actionItems.append(ActionItem(description: "just an item"))
+    actionItems.append(ActionItem(description: "another item"))
+    actionItems.append(ActionItem(description: "just an item"))
+    actionItems.append(ActionItem(description: "another item"))
+    actionItems.append(ActionItem(description: "just an item"))
+    actionItems.append(ActionItem(description: "another item"))
     
   }
 
+  // color cells with gradient by index
+  func colorForIndex(index: Int) -> UIColor {
+    let itemCount = actionItems.count - 1
+    let val = (CGFloat(index) / CGFloat(itemCount)) * 0.6
+    return UIColor(red: 1.0, green: val, blue: 0.0, alpha: 1.0)
+  }
+  
+  // set cell background colors before they are displayed
+  func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    cell.backgroundColor = colorForIndex(indexPath.row)
+  }
+  
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
     // Dispose of any resources that can be recreated.
   }
 
+  // needed for versions older than iOS 8
+  func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    return tableView.rowHeight
+  }
+  
   // TableViewDataSourceDelegate
   func numberOfSectionsInTableView(tableView: UITableView) -> Int {
     return 1
@@ -44,10 +71,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
   }
   
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as UITableViewCell
+    let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as TableViewCell
     let item = actionItems[indexPath.row]
     
     cell.textLabel?.text = item.text
+    cell.textLabel?.backgroundColor = UIColor.clearColor()
 
     return cell
   }

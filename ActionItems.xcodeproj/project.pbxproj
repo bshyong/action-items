@@ -14,6 +14,7 @@
 		012F6D921A6F0D54009E6A39 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 012F6D901A6F0D54009E6A39 /* LaunchScreen.xib */; };
 		012F6D9E1A6F0D54009E6A39 /* ActionItemsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012F6D9D1A6F0D54009E6A39 /* ActionItemsTests.swift */; };
 		28B459301A734E9F0000BE1B /* ActionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B4592F1A734E9F0000BE1B /* ActionItem.swift */; };
+		28B459321A73726C0000BE1B /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B459311A73726C0000BE1B /* TableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +39,7 @@
 		012F6D9C1A6F0D54009E6A39 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		012F6D9D1A6F0D54009E6A39 /* ActionItemsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionItemsTests.swift; sourceTree = "<group>"; };
 		28B4592F1A734E9F0000BE1B /* ActionItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionItem.swift; sourceTree = "<group>"; };
+		28B459311A73726C0000BE1B /* TableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 		012F6D841A6F0D54009E6A39 /* ActionItems */ = {
 			isa = PBXGroup;
 			children = (
+				28B459311A73726C0000BE1B /* TableViewCell.swift */,
 				012F6D871A6F0D54009E6A39 /* AppDelegate.swift */,
 				012F6D891A6F0D54009E6A39 /* ViewController.swift */,
 				012F6D8B1A6F0D54009E6A39 /* Main.storyboard */,
@@ -216,6 +219,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				012F6D8A1A6F0D54009E6A39 /* ViewController.swift in Sources */,
+				28B459321A73726C0000BE1B /* TableViewCell.swift in Sources */,
 				012F6D881A6F0D54009E6A39 /* AppDelegate.swift in Sources */,
 				28B459301A734E9F0000BE1B /* ActionItem.swift in Sources */,
 			);
