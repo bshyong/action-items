@@ -78,6 +78,7 @@ class TableViewCell: UITableViewCell {
   override func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
     if let panGestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer {
       let translation = panGestureRecognizer.translationInView(superview!)
+      // fabs() returns the absolute value of the value
       if fabs(translation.x) > fabs(translation.y) {
         return true
       }
