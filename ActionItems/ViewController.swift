@@ -101,8 +101,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     cell.selectionStyle = .None
     let actionItem = actionItems[indexPath.row]
     
-    cell.textLabel?.text = actionItem.text
-    cell.textLabel?.backgroundColor = UIColor.clearColor()
+    // cell text and background color are set in StrikeThroughLabel
+//    cell.textLabel?.text = actionItem.text
+//    cell.textLabel?.backgroundColor = UIColor.clearColor()
 
     // set delegate and actionItem properties
     cell.delegate = self
