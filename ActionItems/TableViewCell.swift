@@ -22,6 +22,8 @@ class TableViewCell: UITableViewCell {
   var completeOnDragRelease = false
   let label: StrikeThroughText
   let itemCompleteLayer = CALayer()
+  // swipe indicators for complete and delete
+  var tickLabel: UILabel, crossLabel: UILabel
   
   // optional because they are set in ViewController and not in TableViewCell init method
   var delegate: TableViewCellDelegate?
@@ -40,15 +42,34 @@ class TableViewCell: UITableViewCell {
   }
   
   override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    
+    func createCueLabel() -> UILabel {
+      let label = UILabel(frame: CGRect.nullRect)
+      label.textColor = UIColor.whiteColor()
+      label.font = UIFont.boldSystemFontOfSize(32.0)
+      label.backgroundColor = UIColor.clearColor()
+      return label
+    }
+    
     // required properties need to be initialized before calling super.init
     label = StrikeThroughText(frame: CGRect.nullRect)
     label.textColor = UIColor.whiteColor()
     label.font = UIFont.boldSystemFontOfSize(16)
     label.backgroundColor = UIColor.clearColor()
     
+    // add cue labels
+    tickLabel = createCueLabel()
+    tickLabel.text = "\u{2713}"
+    tickLabel.textAlignment = .Right
+    crossLabel = createCueLabel()
+    crossLabel.text = "\u{2717}"
+    crossLabel.textAlignment = .Left
+
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
     // add StrikeThroughLabel
+    addSubview(crossLabel)
+    addSubview(tickLabel)
     addSubview(label)
     selectionStyle = .None
     
@@ -85,6 +106,13 @@ class TableViewCell: UITableViewCell {
       // flag to delete cell if it is dragged more than half the width of the cell
       deleteOnDragRelease = frame.origin.x < -frame.size.width / 2.0
       completeOnDragRelease = frame.origin.x > frame.size.width / 2.0
+      // fade cue labels
+      let cueAlpha = fabs(frame.origin.x) / (frame.size.width / 2.0)
+      tickLabel.alpha = cueAlpha
+      crossLabel.alpha = cueAlpha
+      // indicate when the item is pulled far enough to invoke the complete action
+      tickLabel.textColor = completeOnDragRelease ? UIColor.greenColor() : UIColor.whiteColor()
+      crossLabel.textColor = deleteOnDragRelease ? UIColor.redColor() : UIColor.whiteColor()
     }
     
     if recognizer.state == .Ended {
@@ -123,14 +151,19 @@ class TableViewCell: UITableViewCell {
   }
   
   let kLabelLeftMargin: CGFloat = 15.0
+  let kUICuesMargin: CGFloat = 10.0, kUICuesWidth: CGFloat = 50.0
   override func layoutSubviews() {
     super.layoutSubviews()
     // ensure cell gradient layer always occupies full bounds of the frame
     gradientLayer.frame = bounds
     itemCompleteLayer.frame = bounds
     label.frame = CGRect(x: kLabelLeftMargin, y: 0, width: bounds.size.width - kLabelLeftMargin, height: bounds.size.height)
+    tickLabel.frame = CGRect(x: -kUICuesWidth - kUICuesMargin, y: 0,
+      width: kUICuesWidth, height: bounds.size.height)
+    crossLabel.frame = CGRect(x: bounds.size.width + kUICuesMargin, y: 0,
+      width: kUICuesWidth, height: bounds.size.height)
   }
-  
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
