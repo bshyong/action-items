@@ -107,7 +107,8 @@ class TableViewCell: UITableViewCell, UITextFieldDelegate {
     }
   }
 
-  func textFieldDidEndEditing(textField: UITextField) {
+  func textFieldDidEndEditing(textField: UITextField!) {
+    // set text first before calling delegate action
     if actionItem != nil {
       actionItem!.text = textField.text
     }
