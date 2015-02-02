@@ -56,7 +56,35 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     let index = (actionItems as NSArray).indexOfObject(actionItem)
     if index == NSNotFound { return }
     actionItems.removeAtIndex(index)
-    
+
+    // loop over visible cells until reaching the one which was deleted
+    // from deleted cell onward, add animation to each subsequent cell
+    // animation block moves each cell one row up, with increased
+    // delay on each iteration
+    // http://www.raywenderlich.com/2454/uiview-tutorial-for-ios-how-to-use-uiview-animation
+    let visibleCells = tableView.visibleCells() as [TableViewCell]
+    let lastView = visibleCells[visibleCells.count - 1] as TableViewCell
+    var delay = 0.0
+    var startAnimating = false
+    for i in 0..<visibleCells.count {
+      let cell = visibleCells[i]
+      if startAnimating {
+        UIView.animateWithDuration(0.3, delay: delay, options: .CurveEaseInOut,
+          animations: {() in cell.frame = CGRectOffset(cell.frame, 0.0, -cell.frame.size.height)},
+          completion: {(finished: Bool) in
+            if (cell == lastView) {
+              self.tableView.reloadData()
+            }
+          }
+        )
+        delay += 0.03
+      }
+      if cell.actionItem === actionItem {
+        startAnimating = true
+        cell.hidden = true
+      }
+    }
+
     // animate removal of the row with UITableView
     tableView.beginUpdates()
     let indexPathForRow = NSIndexPath(forRow: index, inSection: 0)
