@@ -50,6 +50,34 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
   }
 
+  // MARK: = TableViewCellDelegate methods
+  func cellDidBeginEditing(editingCell: TableViewCell) {
+    var editingOffset = tableView.contentOffset.y - editingCell.frame.origin.y as CGFloat
+    let visibleCells = tableView.visibleCells() as [TableViewCell]
+    for cell in visibleCells {
+      UIView.animateWithDuration(0.3, animations: {() in
+        cell.transform = CGAffineTransformMakeTranslation(0, editingOffset)
+        if cell !== editingCell {
+          cell.alpha = 0.3
+        }
+      })
+    }
+  }
+  
+  // undo transforms by applying identity transform: 0,0
+  
+  func cellDidEndEditing(editingCell: TableViewCell) {
+    let visibleCells = tableView.visibleCells() as [TableViewCell]
+    for cell: TableViewCell in visibleCells {
+      UIView.animateWithDuration(0.3, animations: {() in
+        cell.transform = CGAffineTransformIdentity
+        if cell !== editingCell {
+          cell.alpha = 1.0
+        }
+      })
+    }
+  }
+  
   // MARK: - Table View Cell delegate
   func actionItemDeleted(actionItem: ActionItem) {
     

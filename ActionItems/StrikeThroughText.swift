@@ -9,7 +9,7 @@
 import UIKit
 import QuartzCore
 
-class StrikeThroughText: UILabel {
+class StrikeThroughText: UITextField {
   let strikeThroughLayer: CALayer
   var strikeThrough : Bool {
     didSet {

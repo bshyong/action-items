@@ -12,9 +12,13 @@ import QuartzCore
 protocol TableViewCellDelegate {
   // indicates that item has been deleted
   func actionItemDeleted(actionItem: ActionItem)
+  // Indicates that edit process has begun for the given cell
+  func cellDidBeginEditing(editingCell: TableViewCell)
+  // Indicates that edit process has ended for the given cell
+  func cellDidEndEditing(editingCell: TableViewCell)
 }
 
-class TableViewCell: UITableViewCell {
+class TableViewCell: UITableViewCell, UITextFieldDelegate {
   
   let gradientLayer = CAGradientLayer()
   var originalCenter = CGPoint()
@@ -66,6 +70,8 @@ class TableViewCell: UITableViewCell {
     crossLabel.textAlignment = .Left
 
     super.init(style: style, reuseIdentifier: reuseIdentifier)
+    label.delegate = self
+    label.contentVerticalAlignment = .Center
     
     // add StrikeThroughLabel
     addSubview(crossLabel)
@@ -94,7 +100,22 @@ class TableViewCell: UITableViewCell {
     recognizer.delegate = self
     addGestureRecognizer(recognizer)
   }
+  
+  func textFieldDidBeginEditing(textField: UITextField) {
+    if delegate != nil {
+      delegate!.cellDidBeginEditing(self)
+    }
+  }
 
+  func textFieldDidEndEditing(textField: UITextField) {
+    if actionItem != nil {
+      actionItem!.text = textField.text
+    }
+    if delegate != nil {
+      delegate!.cellDidEndEditing(self)
+    }
+  }
+  
   func handlePan(recognizer: UIPanGestureRecognizer) {
     if recognizer.state == .Began {
       // record center location when gesture begins
@@ -162,6 +183,27 @@ class TableViewCell: UITableViewCell {
       width: kUICuesWidth, height: bounds.size.height)
     crossLabel.frame = CGRect(x: bounds.size.width + kUICuesMargin, y: 0,
       width: kUICuesWidth, height: bounds.size.height)
+  }
+  
+  // MARK: - UITextFieldDelegate methods
+  func textFieldShouldReturn(textField: UITextField) -> Bool {
+    // close keyboard on Enter
+    textField.resignFirstResponder()
+    return false
+  }
+  
+  func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+    // disable editing on completed actionItems
+    if actionItem != nil {
+      return !actionItem!.completed
+    }
+    return false
+  }
+  
+  func textFieldDidEndEditing(textField: UITextField) {
+    if actionItem != nil {
+      actionItem!.text = textField.text
+    }
   }
 
     override func awakeFromNib() {
