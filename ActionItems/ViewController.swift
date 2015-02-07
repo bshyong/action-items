@@ -16,11 +16,16 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    self.setNeedsStatusBarAppearanceUpdate()
+    self.view.backgroundColor = UIColor.blackColor()
+    
     tableView.dataSource = self
     tableView.delegate = self
     // use custom subclassed TableViewCell in tableView
     tableView.registerClass(TableViewCell.self, forCellReuseIdentifier: "cell")
-    tableView.rowHeight = 50.0
+//    tableView.estimatedRowHeight = 60.0
+//    tableView.rowHeight = UITableViewAutomaticDimension
+    tableView.rowHeight = 75.0
     tableView.separatorStyle = .None
     tableView.backgroundColor = UIColor.blackColor()
 
@@ -47,7 +52,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     actionItems.append(ActionItem(description: "another item"))
     actionItems.append(ActionItem(description: "just an item"))
     actionItems.append(ActionItem(description: "another item"))
-    
+  }
+  
+  override func preferredStatusBarStyle() -> UIStatusBarStyle {
+    return UIStatusBarStyle.LightContent
   }
 
   // MARK: - TableViewCellDelegate methods; add, edit, delete

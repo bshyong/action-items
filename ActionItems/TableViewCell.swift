@@ -50,7 +50,7 @@ class TableViewCell: UITableViewCell, UITextFieldDelegate {
     func createCueLabel() -> UILabel {
       let label = UILabel(frame: CGRect.nullRect)
       label.textColor = UIColor.whiteColor()
-      label.font = UIFont.boldSystemFontOfSize(32.0)
+      label.font = UIFont.boldSystemFontOfSize(36.0)
       label.backgroundColor = UIColor.clearColor()
       return label
     }
@@ -58,7 +58,7 @@ class TableViewCell: UITableViewCell, UITextFieldDelegate {
     // required properties need to be initialized before calling super.init
     label = StrikeThroughText(frame: CGRect.nullRect)
     label.textColor = UIColor.whiteColor()
-    label.font = UIFont.boldSystemFontOfSize(16)
+    label.font = UIFont.boldSystemFontOfSize(20)
     label.backgroundColor = UIColor.clearColor()
     
     // add cue labels
